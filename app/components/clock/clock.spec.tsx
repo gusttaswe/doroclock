@@ -1,7 +1,7 @@
 import { render, fireEvent } from '@testing-library/react';
 import userEvent  from '@testing-library/user-event';
 
-import { Clock } from './Clock';
+import { Clock } from './clock';
 
 describe('Clock Component', () => {
 

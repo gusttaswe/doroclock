@@ -1,5 +1,5 @@
 import { fireEvent, render, waitFor } from "@testing-library/react";
-import { ClockFontSize } from "./ClockFontSize";
+import { ClockFontSize } from "./clock-fontsize";
 import { debug } from "console";
 
 describe('ClockBold Component', () => {

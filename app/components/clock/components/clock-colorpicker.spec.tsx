@@ -1,5 +1,5 @@
 import { render, fireEvent, waitFor } from '@testing-library/react';
-import { ClockColorPicker } from './ClockColorPicker';
+import { ClockColorPicker } from './clock-colorpicker';
 
 describe('ClockColorPicker Component', () => {
 

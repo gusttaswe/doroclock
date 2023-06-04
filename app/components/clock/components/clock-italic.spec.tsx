@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@testing-library/react";
-import { ClockItalic } from "./ClockItalic";
+import { ClockItalic } from "./clock-italic";
 
 describe('ClockBold Component', () => {
   it('Should render the Button Correctly', () => {

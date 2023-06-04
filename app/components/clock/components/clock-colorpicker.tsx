@@ -14,7 +14,6 @@ export function ClockColorPicker({
 
   return (
     <div id="color-settings" data-testid="clock-color-picker">
-      <span className="font-semibold">Color:</span>
       <TwitterPicker
         colors={customColors}
         className="mt-4"

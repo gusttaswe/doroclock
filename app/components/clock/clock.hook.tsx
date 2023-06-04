@@ -1,8 +1,13 @@
+import { StaticImageData } from "next/image";
 import { useState } from "react";
+import giffTest from '@/public/2.gif'
 
 type Clock = {
   color: string;
   fontSize: number;
+  isBold: boolean;
+  isItalic: boolean;
+  background: string | StaticImageData
 }
 
 const useClock = () => {
@@ -29,6 +34,11 @@ const useClock = () => {
 const initialClockSettings: Clock = {
   color: '#fff',
   fontSize: 4,
+  isBold: false,
+  isItalic: false,
+  background: giffTest
 }
+
+export const clockFonts = ['']
 
 export default useClock;
