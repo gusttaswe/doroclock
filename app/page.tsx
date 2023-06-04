@@ -1,22 +1,11 @@
 'use client';
-import { useState } from 'react';
 
-import { Clock } from '@/components/clock';
+import { Clock } from '@/app/components/clock';
 import {
   HomeFooter
-} from '@/components/home/footer';
-
+} from '@/app/components/home/footer';
 
 export default function Home() {
-  const [file, setFile] = useState<any>();
-
-  const uploadFile = (e: any) => {
-    const [file] = e.target.files
-    const url = URL.createObjectURL(file)
-    setFile(url)
-  }
-
-  
   const Header = () => {
     return (
       <header className='bg-slate-800'>
