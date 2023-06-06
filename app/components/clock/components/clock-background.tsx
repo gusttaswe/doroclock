@@ -1,16 +1,17 @@
-import { StaticImageData } from 'next/image';
+import { useContext } from 'react';
+
 import Image from 'next/image';
+import { ThemeContext } from '@/app/components/providers/theme';
 
 type ClockBackground = {
-  background: string | StaticImageData;
   updateBackground(fileUrl: string): void;
 }
 
 export function ClockBackground({
-  background,
   updateBackground
 }: ClockBackground) {
-
+  const { background } = useContext(ThemeContext);
+  
   const uploadFile = (file: File) => {
     const url = URL.createObjectURL(file);
     updateBackground(url)
@@ -35,7 +36,7 @@ export function ClockBackground({
         </label>
         <input
           id="fileInput"
-          data-testid='clock-backround-input'
+          data-testid='clock-background-input'
           type="file"
           className="absolute inset-0 opacity-0 z-[-1]"
           onChange={(e) => uploadFile(e.target.files![0])}
@@ -50,6 +51,7 @@ export function ClockBackground({
               height={100}
               alt=''
               className='rounded-full h-20 w-20 object-cover'
+              data-testid='clock-background-preview'
             />
           ) : (
             <div className='rounded-full h-20 w-20 bg-gray-300' />
