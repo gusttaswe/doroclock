@@ -1,5 +1,8 @@
 import { ThemeProvider } from './components/providers/theme'
+import { allFontVariables } from './fonts'
 import './globals.css'
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
 
 export const metadata = {
   title: 'Create Next App',
@@ -12,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className=''>
+    <html lang="en" className={allFontVariables}>
       <body className='h-screen flex flex-col'>
         <ThemeProvider>{children}</ThemeProvider>
       </body>
