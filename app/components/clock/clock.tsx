@@ -4,10 +4,11 @@ import { createPortal } from "react-dom";
 import { FooterModal } from "@/app/components/modal";
 import { Settings } from 'lucide-react';
 import useClock from "./clock.hook";
-import { ClockBold, ClockColorPicker, ClockFontSize, ClockItalic } from "./components";
+import { ClockAlignment, ClockBold, ClockColorPicker, ClockFontSize, ClockItalic } from "./components";
 import { ClockBackground } from "./components/clock-background";
-import Image from 'next/image';
-import { Suspense } from "react";
+import { useContext } from "react";
+import { ThemeDispatchContext } from "../providers/theme";
+import { ClockFonts } from "./components/clock-fonts";
 
 export const Clock = () => {
   const { 
@@ -15,93 +16,70 @@ export const Clock = () => {
     isSettingsVisible, 
     showSettings, 
     hideSettings, 
-    updateClockSettings 
+    updateClockSettings
   } = useClock();
   
-  return (
-    <>
-      <div className="grid items-baseline">
-        <button 
-          className="justify-self-end relative left-9 top-4"
-          onClick={showSettings}  
-          data-testid="clock-settings-button"
-        >
-          <Settings size={clockSettings.fontSize * 10} color={clockSettings.color} />
-        </button>
-        <span 
-          className="text-6xl lg:text-9xl"
-          style={{
-            color: clockSettings.color,
-            fontSize: `${clockSettings.fontSize}em`,
-            fontWeight: clockSettings.isBold ? 'bold' : 'lighter',
-            fontStyle: clockSettings.isItalic ? 'italic' : 'unset',
-          }}
-          data-testid="clock-timer"
-        >
-          00:00:00
-        </span>
-      </div>
-     
-      { clockSettings.background && createPortal(
-        <Image
-          src={clockSettings.background} 
-          alt="my gif" 
-          height={500}
-          width={500}
-          className='w-screen h-screen absolute top-0 left-0 z-0 object-cover'
-          data-testid='background-image'
-        />,
-        document.body
-      )}
+  const themeActions = useContext(ThemeDispatchContext)
 
-      { true && createPortal(
-        <FooterModal
-          onClose={hideSettings}
-          title="Clock Customizations"
-        >
-          <div 
-            className="w-full grid items-center grid-rows-3"  
-            data-testid="clock-settings-modal"
+  return (
+    <div className="flex flex-col container h-full w-full">
+      <div className="flex justify-center gap-5 p-5 z-10">
+        <ClockBold 
+          isBold={clockSettings.isBold}
+          setBold={() => updateClockSettings({ isBold: !clockSettings.isBold })}
+        />
+        <ClockItalic 
+          isItalic={clockSettings.isItalic}
+          setItalic={() => updateClockSettings({ isItalic: !clockSettings.isItalic })}
+        />
+        <ClockAlignment 
+          currentAlignment={clockSettings.horizontalAlignment}
+          changeAlignment={(alignment) => updateClockSettings({ horizontalAlignment: alignment })} 
+          algnmentType={"horizontal"}
+        />
+        <ClockAlignment 
+          currentAlignment={clockSettings.verticalAlignment}
+          changeAlignment={(alignment) => updateClockSettings({ verticalAlignment: alignment })} 
+          algnmentType={"vertical"}
+        />
+      </div>
+      
+      <div 
+        className="flex-1 flex items-center"
+        style={{
+          alignItems: clockSettings.verticalAlignment,
+          justifyContent: clockSettings.horizontalAlignment
+        }}
+      >
+        <div className="relative">
+          <span 
+            className={`text-6xl lg:text-9xl ${clockSettings.fontFamily}`}
+            style={{
+              color: clockSettings.color,
+              fontSize: `${clockSettings.fontSize}em`,
+              fontWeight: clockSettings.isBold ? 'bold' : 'lighter',
+              fontStyle: clockSettings.isItalic ? 'italic' : 'unset',
+            }}
+            data-testid="clock-timer"
           >
-            <div>
-              <span className="font-semibold">Color:</span>
-              <div className="mt-4">
-                <ClockColorPicker 
-                  currentColor={clockSettings.color} 
-                  updateColor={(color) => updateClockSettings({ color })}
-                />
-              </div>
-            </div>
-            <div id="font-settings">
-              <span className="font-semibold">Font Settings:</span>
-              <div className="flex items-center gap-4 mt-4">
-                <ClockFontSize 
-                  fontSize={clockSettings.fontSize}
-                  updateFontSize={(fontSize) => updateClockSettings({ fontSize })}
-                />
-                <ClockBold 
-                  isBold={clockSettings.isBold}
-                  setBold={() => updateClockSettings({ isBold: !clockSettings.isBold })}
-                />
-                <ClockItalic 
-                  isItalic={clockSettings.isItalic}
-                  setItalic={() => updateClockSettings({ isItalic: !clockSettings.isItalic })}
-                />
-              </div>
-            </div>
-            <div>
-              <span className="font-semibold">Background</span>
-              <div className="mt-4">
-                <ClockBackground 
-                  background={clockSettings.background}
-                  updateBackground={(background) => updateClockSettings({ background })}
-                />
-              </div>
-            </div>
-          </div>
-        </FooterModal>,
-        document.body
-      )}
-    </>
+            00:00:00
+          </span>
+          <button 
+            className="absolute bottom-11"
+            onClick={isSettingsVisible ? hideSettings : showSettings}  
+            data-testid="clock-settings-button"
+            >
+            <Settings size={clockSettings.fontSize * 10} color={clockSettings.color} />
+          </button>
+        </div>
+      </div>
+
+      <div className="flex flex-col flex-shrink-0 z-10">
+        <ClockFonts
+          currentFont={clockSettings.fontFamily || ""}
+          updateFont={(font) => updateClockSettings({ fontFamily: font })}
+        />
+      </div>
+    </div>
   )
 }
