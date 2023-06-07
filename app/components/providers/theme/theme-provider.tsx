@@ -16,22 +16,26 @@ type ThemeProviderProps = {
 export function ThemeProvider({ children }: ThemeProviderProps) {
   const [theme, dispatch] = useReducer(themeReducer, initialThemeSettings);
 
-  const changeThemeColor = useCallback(() => dispatch({ 
-    type: ThemeActions.CHANGE_THEME_COLOR,
-  }), [dispatch])
-
-  const changeBackground = useCallback((background: ThemeSettings['background']) => dispatch({
-    type: ThemeActions.CHANGE_BACKGROUND,
-    background: background
-  }), [dispatch])
-
-  const ThemeActionHandlers = useMemo(() => ({ 
-    changeBackground, changeThemeColor 
-  }), [changeThemeColor, changeBackground]);
+  const themeActions = useMemo(
+    () => ({
+      changeBackground: (background: string) => {
+        dispatch({
+          type: ThemeActions.CHANGE_BACKGROUND,
+          background: background,
+        });
+      },
+      changeThemeColor: () => {
+        dispatch({
+          type: ThemeActions.CHANGE_THEME_COLOR,
+        });
+      },
+    }),
+    [dispatch]
+  );
 
   return (
     <ThemeContext.Provider value={theme}>      
-      <ThemeDispatchContext.Provider value={ThemeActionHandlers}>
+      <ThemeDispatchContext.Provider value={themeActions}>
         {children}
       </ThemeDispatchContext.Provider>
     </ThemeContext.Provider>
