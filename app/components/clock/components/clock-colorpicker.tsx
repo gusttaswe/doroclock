@@ -1,7 +1,7 @@
 import { Pipette } from 'lucide-react'
 import { createPortal } from 'react-dom';
-import ImageColorPicker from '../../image-color-picker';
 import { useCallback, useState } from 'react';
+import { ImageColorPicker } from '@/app/components/image-color-picker';
 
 type ClockColorPicker = {
   currentColor: string;

@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { getCanvasCoordinates, getPixelColor } from '@/app/shared/utils';
 import { useWindowListener } from '@/app/shared/hooks';
+import { InfoIcon } from 'lucide-react';
 
 type ImageColorPickerProps = {
   updateColor(color: string): void
@@ -42,18 +43,32 @@ export const  ImageColorPicker = ({
 
   useWindowListener('touchmove', handleMove, { passive: true })
   useWindowListener('touchend', () => updateColor(color))
-    
+  
+  const unMoved = position.x === 0 && position.y === 0;
   return (
     <>
+      <div className='
+        z-[100] absolute 
+        right-3 top-3 
+        flex items-center gap-1
+        border rounded-md
+        bg-slate-500/25
+        text-white
+        p-2 
+      '
+      >
+        <InfoIcon size={16} />
+        <span>Move to pick a color</span>
+      </div>
       <div 
         data-testid="image-color-pick-preview"
-        hidden={position.x === 0 && position.y === 0}
-        className='
+        className={`
           absolute 
           w-10 h-10 
           shadow-lg border-[3px] 
           rounded-full z-[100]
-        '
+          ${unMoved ? 'top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]' : ''}
+        `}
         style={{
           transform: `translate(${position.x}px, ${position.y}px)`,
           backgroundColor: color

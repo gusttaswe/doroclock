@@ -1,1 +1,1 @@
-export {  } from './image-color-picker'
+export { ImageColorPicker } from './image-color-picker'
