@@ -1,33 +1,29 @@
 'use client';
 
-import { Clock } from '@/app/components/clock';
-import {
-  HomeFooter
-} from '@/app/components/home/footer';
+import Image from 'next/image'
+import { useContext } from 'react';
+import { ThemeContext } from '@/app/components/providers/theme';
+import { HomeHeader, HomeContent } from './components/home';
 
 export default function Home() {
-  const Header = () => {
-    return (
-      <header className='bg-slate-800'>
-        header
-      </header>
-      )
-  }
-
-  const Main = () => {
-
-    return (
-      <main className='flex-grow flex items-center justify-center'>
-        <Clock />
-      </main>
-    )
-  }
-
+  const theme = useContext(ThemeContext);
+  
   return (
     <>
-      <Header />
-      <Main />
-      <HomeFooter />
+      <HomeHeader />
+      <HomeContent />
+      { theme.background ? (
+        <Image
+          src={theme.background} 
+          alt="my gif" 
+          height={500}
+          width={500}
+          className='w-screen h-screen absolute top-0 left-0 z-0 object-cover'
+          data-testid='background-image'
+        />
+      ) : (
+        <div className='w-screen h-screen absolute top-0 left-0 bg-slate-800 z-0'></div>
+      )}
     </>
   )
 }

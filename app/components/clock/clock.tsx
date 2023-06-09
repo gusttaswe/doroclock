@@ -7,7 +7,7 @@ import useClock from "./clock.hook";
 import { ClockAlignment, ClockBold, ClockColorPicker, ClockFontSize, ClockItalic } from "./components";
 import { ClockBackground } from "./components/clock-background";
 import { useContext } from "react";
-import { ThemeDispatchContext } from "../providers/theme";
+import { ThemeContext, ThemeDispatchContext } from "../providers/theme";
 import { ClockFonts } from "./components/clock-fonts";
 
 export const Clock = () => {
@@ -16,36 +16,44 @@ export const Clock = () => {
     isSettingsVisible, 
     showSettings, 
     hideSettings, 
-    updateClockSettings
+    updateClockSettings,
+    textColorOptions
   } = useClock();
   
   const themeActions = useContext(ThemeDispatchContext)
+  const theme = useContext(ThemeContext)
 
   return (
     <div className="flex flex-col container h-full w-full">
-      <div className="flex justify-center gap-5 p-5 z-10">
-        <ClockBold 
-          isBold={clockSettings.isBold}
-          setBold={() => updateClockSettings({ isBold: !clockSettings.isBold })}
-        />
-        <ClockItalic 
-          isItalic={clockSettings.isItalic}
-          setItalic={() => updateClockSettings({ isItalic: !clockSettings.isItalic })}
-        />
-        <ClockAlignment 
-          currentAlignment={clockSettings.horizontalAlignment}
-          changeAlignment={(alignment) => updateClockSettings({ horizontalAlignment: alignment })} 
-          algnmentType={"horizontal"}
-        />
-        <ClockAlignment 
-          currentAlignment={clockSettings.verticalAlignment}
-          changeAlignment={(alignment) => updateClockSettings({ verticalAlignment: alignment })} 
-          algnmentType={"vertical"}
-        />
-      </div>
+
+      { isSettingsVisible && (
+        <div className="flex justify-center gap-5 p-5 z-10">
+          <ClockBold 
+            isBold={clockSettings.isBold}
+            setBold={() => updateClockSettings({ isBold: !clockSettings.isBold })}
+          />
+          <ClockItalic 
+            isItalic={clockSettings.isItalic}
+            setItalic={() => updateClockSettings({ isItalic: !clockSettings.isItalic })}
+          />
+          <ClockAlignment 
+            currentAlignment={clockSettings.horizontalAlignment}
+            changeAlignment={(alignment) => updateClockSettings({ horizontalAlignment: alignment })} 
+            algnmentType={"horizontal"}
+          />
+          <ClockAlignment 
+            currentAlignment={clockSettings.verticalAlignment}
+            changeAlignment={(alignment) => updateClockSettings({ verticalAlignment: alignment })} 
+            algnmentType={"vertical"}
+          />
+          <ClockBackground 
+            updateBackground={(background) => themeActions?.changeBackground(background)}
+          />
+        </div>
+      )}
       
       <div 
-        className="flex-1 flex items-center"
+        className={`flex-1 flex items-center ${isSettingsVisible ? 'p-8' : 'p-14'}`}
         style={{
           alignItems: clockSettings.verticalAlignment,
           justifyContent: clockSettings.horizontalAlignment
@@ -74,12 +82,22 @@ export const Clock = () => {
         </div>
       </div>
 
-      <div className="flex flex-col flex-shrink-0 z-10">
-        <ClockFonts
-          currentFont={clockSettings.fontFamily || ""}
-          updateFont={(font) => updateClockSettings({ fontFamily: font })}
-        />
-      </div>
+      { isSettingsVisible && (
+        <div className="flex flex-col flex-shrink-0 z-10">
+          <ClockColorPicker 
+            currentColor={clockSettings.color}
+            updateColor={(color) => updateClockSettings({ color: color })}
+            customColors={textColorOptions}
+            currentImage={theme.background}
+          />
+          <br/>
+          <br/>
+          <ClockFonts
+            currentFont={clockSettings.fontFamily || ""}
+            updateFont={(font) => updateClockSettings({ fontFamily: font })}
+          />
+        </div>
+      )}
     </div>
   )
 }

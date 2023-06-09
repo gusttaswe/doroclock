@@ -1,7 +1,7 @@
 import { Pipette } from 'lucide-react'
 import { createPortal } from 'react-dom';
 import ImageColorPicker from '../../image-color-picker';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 type ClockColorPicker = {
   currentColor: string;
@@ -10,8 +10,13 @@ type ClockColorPicker = {
   currentImage: string;
 }
 
-function isLightColor(hexColor: string) {
-  const [red, green, blue] = hexColor.replace('#', '').match(/.{2}/g)!.map(component => parseInt(component, 16));
+function isLightColor(color: string) {
+  const colorMatch = color.includes('#') 
+    ? color.replace('#', '').match(/.{2}/g)
+    : color.replaceAll(/[^\d+]/g, "").match(/.{3}/g)
+
+  const [red, green, blue] = colorMatch!.map((color) => parseInt(color, 16))
+
   const luminance = (0.2126 * red + 0.7152 * green + 0.0722 * blue) / 255;
   return luminance > 0.5;
 }
@@ -23,9 +28,13 @@ export function ClockColorPicker({
   currentImage
 }: ClockColorPicker) {
   const [isImageSelectorOpen, setIsImageColorPickOpen] = useState(false);
-  const color = currentColor.replace('#', "");
-  const isLight = isLightColor(color);
+  const isLight = isLightColor(currentColor);
   const pickerTheme = isLight ? 'black' : 'white';
+
+  const handleColorUpdate = useCallback((newColor: string) => {
+    updateColor(newColor)
+    setIsImageColorPickOpen(false)
+  }, [updateColor])
 
   return (
     <>
@@ -34,7 +43,7 @@ export function ClockColorPicker({
         data-testid="clock-color-picker"
         className="flex justify-center gap-2 flex-wrap"
       >
-        <div>
+        <div className='flex items-center'>
           <button 
             data-testid="pick-color-button"
             className={`w-8 h-8 flex justify-center items-center rounded-md`}
@@ -47,7 +56,7 @@ export function ClockColorPicker({
             <Pipette size={15} color={pickerTheme} />
           </button>
         </div>
-        <div data-testid="color-options-container">
+        <div className='flex items-center  gap-2' data-testid="color-options-container">
           { customColors.map((color) => (
             <button 
               key={color} 
@@ -63,10 +72,7 @@ export function ClockColorPicker({
       { (isImageSelectorOpen && currentImage) && createPortal(
         <ImageColorPicker 
           imageBlob={currentImage} 
-          updateColor={(newColor) => {
-            updateColor(newColor)
-            setIsImageColorPickOpen(false)
-          }}  
+          updateColor={(newColor) => handleColorUpdate(newColor)}  
         />,
         document.body
       )}

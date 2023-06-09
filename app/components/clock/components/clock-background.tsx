@@ -2,7 +2,7 @@ import { useContext } from 'react';
 
 import Image from 'next/image';
 import { ThemeContext } from '@/app/components/providers/theme';
-
+import { ImageIcon } from 'lucide-react'
 type ClockBackground = {
   updateBackground(fileUrl: string): void;
 }
@@ -22,41 +22,32 @@ export function ClockBackground({
       <div>
         <label 
           htmlFor="fileInput" 
-          className="
-            relative 
-            cursor-pointer 
-            bg-blue-500 
-            text-white 
-            py-2 px-4 
-            rounded-lg shadow-md 
-            hover:bg-blue-600
-          "
+          className="relative text-white"
         >
-          Select File
+          {
+            background ? (
+              <Image 
+                src={background}
+                width={100}
+                height={100}
+                alt=''
+                className='rounded-full h-8 w-8 object-cover border-[2px] shadow-2xl'
+                data-testid='clock-background-preview'
+              />
+            ) : (
+              <div className='grid place-items-center rounded-full h-8 w-8 border-[2px] shadow-lg'>
+                <ImageIcon size={10}/>
+              </div>
+            )
+          }
         </label>
         <input
           id="fileInput"
           data-testid='clock-background-input'
           type="file"
-          className="absolute inset-0 opacity-0 z-[-1]"
+          className="absolute inset-0 hidden z-[-1]"
           onChange={(e) => uploadFile(e.target.files![0])}
         />
-      </div>
-      <div className=''>
-        {
-          background ? (
-            <Image 
-              src={background}
-              width={100}
-              height={100}
-              alt=''
-              className='rounded-full h-20 w-20 object-cover'
-              data-testid='clock-background-preview'
-            />
-          ) : (
-            <div className='rounded-full h-20 w-20 bg-gray-300' />
-          )
-        }
       </div>
     </div>
   )
