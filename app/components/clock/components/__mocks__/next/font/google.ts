@@ -1,0 +1,12 @@
+export const Bungee_Hairline = () => ({ className: 'Bungee_Hairline', variable: 'Bungee_Hairline'});
+export const Modern_Antiqua = () => ({ className: 'Modern_Antiqua', variable: 'Modern_Antiqua'});
+export const Montserrat = () => ({ className: 'Montserrat', variable: 'Montserrat'});
+export const MuseoModerno = () => ({ className: 'MuseoModerno', variable: 'MuseoModerno'});
+export const New_Tegomin = () => ({ className: 'New_Tegomin', variable: 'New_Tegomin'});
+export const Poiret_One = () => ({ className: 'Poiret_One', variable: 'Poiret_One'});
+export const Press_Start_2P = () => ({ className: 'Press_Start_2P', variable: 'Press_Start_2P'});
+export const Roboto = () => ({ className: 'Roboto', variable: 'Roboto'});
+export const Sacramento = () => ({ className: 'Sacramento', variable: 'Sacramento'});
+export const Twinkle_Star = () => ({ className: 'Twinkle_Star', variable: 'Twinkle_Star'});
+export const Yuji_Mai = () => ({ className: 'Yuji_Mai', variable: 'Yuji_Mai'});
+export const Inter = () => ({ className: 'Inter', variable: 'Inter'});
