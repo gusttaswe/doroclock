@@ -32,12 +32,24 @@ export const  ImageColorPicker = ({
   }
 
   useEffect(() => {
+    function handleInitialColor(img: HTMLImageElement) {
+      const x = Math.floor(img.width / 2)
+      const y = Math.floor(img.height / 2)
+
+      const [red, green, blue] = getPixelColor(context!, x, y);
+
+      const rgbColor = `rgb(${red}, ${green}, ${blue})`;
+
+      setColor(rgbColor);
+    } 
+
     const context = canvasRef.current!.getContext('2d', { willReadFrequently: true });
     const img = new Image();
     img.onload = () => {
       canvasRef.current!.width = img.width;
       canvasRef.current!.height = img.height;
       context!.drawImage(img, 0, 0);
+      handleInitialColor(img);
     };
     img.src = imageBlob;
   }, [imageBlob])
