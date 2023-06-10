@@ -42,6 +42,7 @@ export const  ImageColorPicker = ({
     img.src = imageBlob;
   }, [imageBlob])
 
+  useToggleOverflow();
   useWindowListener('touchmove', handleMove, { passive: true })
   useWindowListener('touchend', () => updateColor(color))
   
