@@ -72,7 +72,7 @@ export function ClockColorPicker({
       { (isImageSelectorOpen && currentImage) && createPortal(
         <ImageColorPicker 
           imageBlob={currentImage} 
-          updateColor={(newColor) => handleColorUpdate(newColor)}  
+          onPick={(newColor) => handleColorUpdate(newColor)}  
         />,
         document.body
       )}
