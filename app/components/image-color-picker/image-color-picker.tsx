@@ -3,6 +3,7 @@ import { useToggleOverflow } from '@/app/shared/hooks';
 import { InfoIcon } from 'lucide-react';
 import { useCanvas } from '@/app/shared/hooks/useCanvas';
 import { ColorPreview } from './color-preview';
+import { ZoomPreview } from './zoom-preview';
 
 type ImageColorPickerProps = {
   onPick(color: string): void
@@ -26,14 +27,20 @@ export const  ImageColorPicker = ({
   return (
     <div>
       <ColorPreview color={color} />
+      <ZoomPreview 
+        color={color}
+        coordinates={coordinates}
+        hasMoved={hasMoved}
+        canvasRef={canvasRef.current!}
+      />
       <canvas 
         data-testid="image-color-pick-canvas"
         className='w-screen h-screen absolute top-0 left-0 z-50 object-cover' 
         ref={canvasRef} 
         onTouchMove={onTouch}
-        onTouchEnd={() => onPick(color)}
+        // onTouchEnd={() => onPick(color)}
         onPointerMove={onPointerMove}
-        onClick={() => onPick(color)}
+        // onClick={() => onPick(color)}
       />
     </div>
   );

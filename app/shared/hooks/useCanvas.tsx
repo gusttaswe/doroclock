@@ -23,6 +23,8 @@ export function useCanvas(
     const touch = event.touches[0];
     const coordinates = { x: touch.clientX, y: touch.clientY}
     const color = canvas!.getCanvasColorByCoordinates(coordinates);
+    // canvas!.drawZoomPreview(coordinates);
+
     setColor(color);
     setCoordinates(coordinates);
   }

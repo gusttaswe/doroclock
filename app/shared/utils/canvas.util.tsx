@@ -6,13 +6,27 @@ export type Coordinates = {
 export class Canvas {
   private readonly canvas!: HTMLCanvasElement;
   private readonly context!: CanvasRenderingContext2D;
+  private readonly zoomCtx!: CanvasRenderingContext2D;
+  
+  private zoom: number = 3;
   constructor(
     canvas: React.RefObject<HTMLCanvasElement>,
   ) {
     this.canvas = canvas.current as HTMLCanvasElement;
     this.context = this.canvas.getContext('2d', { willReadFrequently: true }) as CanvasRenderingContext2D;
+    this.zoomCtx = this.canvas.getContext('2d', { willReadFrequently: true }) as CanvasRenderingContext2D;
   }
-  
+
+
+  drawZoomPreview(coordinates: Coordinates) {
+    const { x, y } = this.getCanvasCoordinates(coordinates);
+
+    const zoomWidth = this.canvas.width * this.zoom;
+    const zoomHeight = this.canvas.height * this.zoom;
+
+    this.zoomCtx.drawImage(this.canvas, x, y, zoomWidth, zoomHeight, 0, 0, zoomWidth, zoomHeight);
+  }
+
   public async setCanvasImage(image: any): Promise<void> {
     return new Promise((resolve) => {
       const img = new Image();
@@ -28,7 +42,7 @@ export class Canvas {
 
   public setDimensions(width: number, height: number) {
     this.canvas.width = width;
-    this.canvas.height = height
+    this.canvas.height = height;
   }
   
   public getCanvascoordinates(): Coordinates {
