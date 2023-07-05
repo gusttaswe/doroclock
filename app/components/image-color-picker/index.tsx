@@ -1,1 +1,0 @@
-export { ImageColorPicker } from './image-color-picker'
