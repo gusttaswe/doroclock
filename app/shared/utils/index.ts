@@ -1,0 +1,1 @@
+export { default as isLightColor } from './isLightColor.util'

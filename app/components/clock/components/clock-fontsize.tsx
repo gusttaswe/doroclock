@@ -1,13 +1,10 @@
 
-type ClockFontSize = {
-  fontSize: number;
-  updateFontSize(newSize: number): void;
-}
+import { ClockFontSizeProps } from './clock-fontsize.types'
 
 export function ClockFontSize({
   fontSize,
   updateFontSize
-}: ClockFontSize) {
+}: ClockFontSizeProps) {
 
   const handleFontSizeChange = (fontSize: number) => {
     if (fontSize < 1) return;
